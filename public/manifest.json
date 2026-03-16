@@ -1,0 +1,26 @@
+{
+  "name": "VOTO INFORMADO 2026",
+  "short_name": "Voto Informado",
+  "description": "Investiga, evalúa y compara candidatos presidenciales del Perú 2026 con datos verificables",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06060F",
+  "theme_color": "#F5A623",
+  "orientation": "portrait-primary",
+  "lang": "es-PE",
+  "categories": ["news", "politics", "education"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

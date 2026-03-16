@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://votoinformado2026.pe/sitemap.xml
