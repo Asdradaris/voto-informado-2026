@@ -229,11 +229,11 @@ export const keikoFujimori: Candidate = {
   polls: [
     {
       pollster: "datum",
-      date: "2026-03-08",
-      percentage: 10.7,
+      date: "2026-03-10",
+      percentage: 10.9,
       sampleSize: 1501,
       marginOfError: 2.5,
-      source: "Datum Internacional - Marzo 2026",
+      source: "Datum Internacional - Marzo II 2026 (campo: 6-10 Mar)",
     },
     {
       pollster: "ipsos",
@@ -245,11 +245,19 @@ export const keikoFujimori: Candidate = {
     },
     {
       pollster: "cpi",
-      date: "2026-02-28",
-      percentage: 9.8,
-      sampleSize: 1500,
+      date: "2026-03-07",
+      percentage: 7.0,
+      sampleSize: 1200,
       marginOfError: 2.5,
-      source: "CPI - Febrero 2026",
+      source: "CPI - Marzo 2026 (para RPP)",
+    },
+    {
+      pollster: "iep",
+      date: "2026-03-11",
+      percentage: 9.4,
+      sampleSize: 1207,
+      marginOfError: 2.8,
+      source: "IEP - Informe de Opinión Marzo 2026 (campo: 6-11 Mar)",
     },
   ],
   negativeImage: 77.4,
@@ -344,7 +352,7 @@ export const keikoFujimori: Candidate = {
       reliability: "alta",
     },
   ],
-  lastUpdated: "2026-03-16",
+  lastUpdated: "2026-03-18",
   investigationStatus: "en_progreso",
   notes:
     "Candidata con mayor trayectoria electoral (4ta postulación) pero con el mayor rechazo ciudadano y el proceso legal más grave entre todos los candidatos. Ha perdido tres segundas vueltas consecutivas. Su base electoral es sólida pero tiene un techo bajo por el alto antivoto. El caso Cócteles es el proceso anticorrupción más importante vinculado a un candidato en actividad.",

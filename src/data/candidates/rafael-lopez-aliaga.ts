@@ -210,11 +210,11 @@ export const rafaelLopezAliaga: Candidate = {
   polls: [
     {
       pollster: "datum",
-      date: "2026-03-08",
-      percentage: 10.0,
+      date: "2026-03-10",
+      percentage: 11.4,
       sampleSize: 1501,
       marginOfError: 2.5,
-      source: "Datum Internacional - Marzo 2026",
+      source: "Datum Internacional - Marzo II 2026 (campo: 6-10 Mar)",
     },
     {
       pollster: "ipsos",
@@ -226,11 +226,19 @@ export const rafaelLopezAliaga: Candidate = {
     },
     {
       pollster: "cpi",
-      date: "2026-02-28",
-      percentage: 8.5,
-      sampleSize: 1500,
+      date: "2026-03-07",
+      percentage: 13.9,
+      sampleSize: 1200,
       marginOfError: 2.5,
-      source: "CPI - Febrero 2026",
+      source: "CPI - Marzo 2026 (para RPP)",
+    },
+    {
+      pollster: "iep",
+      date: "2026-03-11",
+      percentage: 11.7,
+      sampleSize: 1207,
+      marginOfError: 2.8,
+      source: "IEP - Informe de Opinión Marzo 2026 (campo: 6-11 Mar)",
     },
   ],
   negativeImage: 57.9,
@@ -318,7 +326,7 @@ export const rafaelLopezAliaga: Candidate = {
       reliability: "alta",
     },
   ],
-  lastUpdated: "2026-03-16",
+  lastUpdated: "2026-03-18",
   investigationStatus: "en_progreso",
   notes:
     "Lidera simulacro Ipsos con 17.2% en votos válidos. Candidato más polarizante después de Keiko Fujimori. Su principal fortaleza es la visibilidad de su gestión en Lima, pero su principal debilidad es el conflicto de interés empresarial más grande entre todos los candidatos. Su discurso ultraconservador le da una base sólida pero limita su crecimiento electoral.",
