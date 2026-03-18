@@ -117,11 +117,11 @@ export const carlosAlvarez: Candidate = {
   polls: [
     {
       pollster: "datum",
-      date: "2026-03-08",
-      percentage: 5.0,
+      date: "2026-03-10",
+      percentage: 4.0,
       sampleSize: 1501,
       marginOfError: 2.5,
-      source: "Datum Internacional - Marzo 2026",
+      source: "Datum Internacional - Marzo II 2026 (campo: 6-10 Mar)",
     },
     {
       pollster: "ipsos",
@@ -133,11 +133,19 @@ export const carlosAlvarez: Candidate = {
     },
     {
       pollster: "cpi",
-      date: "2026-02-28",
-      percentage: 4.5,
-      sampleSize: 1500,
+      date: "2026-03-07",
+      percentage: 4.0,
+      sampleSize: 1200,
       marginOfError: 2.5,
-      source: "CPI - Febrero 2026",
+      source: "CPI - Marzo 2026 (para RPP)",
+    },
+    {
+      pollster: "iep",
+      date: "2026-03-11",
+      percentage: 3.9,
+      sampleSize: 1207,
+      marginOfError: 2.8,
+      source: "IEP - Informe de Opinión Marzo 2026 (campo: 6-11 Mar)",
     },
   ],
   negativeImage: 25.1,
@@ -204,7 +212,7 @@ export const carlosAlvarez: Candidate = {
       reliability: "media",
     },
   ],
-  lastUpdated: "2026-03-16",
+  lastUpdated: "2026-03-18",
   investigationStatus: "en_progreso",
   notes:
     "Candidato outsider con la mayor simpatía y menor rechazo entre los top 5, pero sin ninguna experiencia en gestión pública. Representa el voto antisistema sin carga ideológica fuerte. Su principal fortaleza es que no tiene pasado político que le juegue en contra; su principal debilidad es que no tiene equipo técnico visible ni plan de gobierno detallado. Los precedentes de outsiders en Perú son mayoritariamente negativos (Fujimori derivó en autoritarismo, Castillo en ingobernabilidad).",
