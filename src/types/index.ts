@@ -19,3 +19,13 @@ export type {
   UserScore,
   CandidateRanking,
 } from "./scoring";
+
+export type {
+  VotingRound,
+  VoteCount,
+  CitizenSuggestion,
+  VotingState,
+  CastVotePayload,
+  CastVoteResponse,
+  SubmitSuggestionPayload,
+} from "./voting";

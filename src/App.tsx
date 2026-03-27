@@ -21,6 +21,12 @@ const MethodologyPage = lazy(() =>
     default: m.MethodologyPage,
   }))
 );
+const VotePage = lazy(() =>
+  import("./pages/VotePage").then((m) => ({ default: m.VotePage }))
+);
+const ResultsPage = lazy(() =>
+  import("./pages/ResultsPage").then((m) => ({ default: m.ResultsPage }))
+);
 
 function PageLoader() {
   return (
@@ -44,6 +50,8 @@ export default function App() {
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/ranking" element={<RankingPage />} />
               <Route path="/methodology" element={<MethodologyPage />} />
+              <Route path="/encuesta" element={<VotePage />} />
+              <Route path="/resultados" element={<ResultsPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>

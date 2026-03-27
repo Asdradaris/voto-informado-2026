@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { Vote, GitCompareArrows, Trophy, BookOpen } from "lucide-react";
+import { Vote, GitCompareArrows, Trophy, BookOpen, BarChart3 } from "lucide-react";
 import { CountdownTimer } from "../ui/CountdownTimer";
 import { cn } from "../../lib/utils";
 
 const navItems = [
   { path: "/", label: "Candidatos", icon: Vote },
+  { path: "/encuesta", label: "Encuesta", icon: BarChart3 },
   { path: "/compare", label: "Comparar", icon: GitCompareArrows },
   { path: "/ranking", label: "Mi Ranking", icon: Trophy },
   { path: "/methodology", label: "Metodología", icon: BookOpen },
