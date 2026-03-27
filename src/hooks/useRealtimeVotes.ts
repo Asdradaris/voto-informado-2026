@@ -103,33 +103,10 @@ export function useRealtimeVotes(roundNumber: number) {
     };
   }, [roundNumber, fetchCounts]);
 
-  // Demo mode: simulate votes
+  // Demo mode: start from zero, no fake data
   useEffect(() => {
     if (!isDemoMode) return;
-
-    // Seed initial demo data
-    setCounts((prev) => {
-      const seeded = prev.map((c, i) => ({
-        ...c,
-        totalVotes: [327, 280, 229, 176, 131][i] ?? Math.floor(Math.random() * 100 + 20),
-      }));
-      return recalculate(seeded);
-    });
-    setTotalVoters(1143);
     setIsConnected(true);
-
-    const interval = setInterval(() => {
-      setCounts((prev) => {
-        const randomIdx = Math.floor(Math.random() * prev.length);
-        const updated = prev.map((c, i) =>
-          i === randomIdx ? { ...c, totalVotes: c.totalVotes + 1 } : c
-        );
-        return recalculate(updated);
-      });
-      setTotalVoters((prev) => prev + 1);
-    }, 3000 + Math.random() * 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return { counts, totalVoters, isConnected, refetch: fetchCounts };

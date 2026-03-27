@@ -5,38 +5,7 @@ import type { CitizenSuggestion } from "@/types";
 
 const SUGGESTION_COUNT_KEY = "vi_suggestions";
 
-const DEMO_SUGGESTIONS: CitizenSuggestion[] = [
-  {
-    id: "1",
-    content: "Quiero saber de dónde sale la plata de López Aliaga para su campaña",
-    createdAt: new Date(Date.now() - 3 * 60000).toISOString(),
-    roundNumber: 1,
-  },
-  {
-    id: "2",
-    content: "Necesitamos que investiguen el caso Qali Warma y Acuña",
-    createdAt: new Date(Date.now() - 12 * 60000).toISOString(),
-    roundNumber: 1,
-  },
-  {
-    id: "3",
-    content: "¿Alguien sabe si Grozo tiene conflictos de interés? No encuentro info",
-    createdAt: new Date(Date.now() - 28 * 60000).toISOString(),
-    roundNumber: 1,
-  },
-  {
-    id: "4",
-    content: "Me preocupa que ningún candidato hable de reforma educativa en serio",
-    createdAt: new Date(Date.now() - 45 * 60000).toISOString(),
-    roundNumber: 1,
-  },
-  {
-    id: "5",
-    content: "Investiguen las propiedades no declaradas de Keiko Fujimori",
-    createdAt: new Date(Date.now() - 60 * 60000).toISOString(),
-    roundNumber: 1,
-  },
-];
+const DEMO_SUGGESTIONS: CitizenSuggestion[] = [];
 
 // Basic profanity filter
 const BLOCKED_WORDS = [
