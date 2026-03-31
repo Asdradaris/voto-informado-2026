@@ -24,6 +24,7 @@ import { Badge } from "../components/ui/Badge";
 import { ProgressBar } from "../components/ui/ProgressBar";
 import { CandidateAvatar } from "../components/candidate/CandidateAvatar";
 import { CompareDataView } from "../components/compare/CompareDataView";
+import { CandidateSelect } from "../components/ui/CandidateSelect";
 import { shareComparison } from "../lib/share";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -114,17 +115,11 @@ export function ComparePage() {
 
       {/* Selector */}
       <div className="mb-6 flex flex-col items-center gap-3 sm:flex-row">
-        <select
+        <CandidateSelect
           value={idA}
-          onChange={(e) => setIdA(e.target.value)}
-          className="w-full rounded-lg border border-white/[0.06] bg-[#0D0D20] px-4 py-3 text-sm text-gray-200 outline-none focus:border-amber-500/30 sm:flex-1"
-        >
-          {candidates.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name} ({c.party.acronym})
-            </option>
-          ))}
-        </select>
+          onChange={setIdA}
+          className="w-full sm:flex-1"
+        />
 
         <button
           onClick={handleSwap}
@@ -133,17 +128,11 @@ export function ComparePage() {
           <ArrowRightLeft className="h-4 w-4" />
         </button>
 
-        <select
+        <CandidateSelect
           value={idB}
-          onChange={(e) => setIdB(e.target.value)}
-          className="w-full rounded-lg border border-white/[0.06] bg-[#0D0D20] px-4 py-3 text-sm text-gray-200 outline-none focus:border-amber-500/30 sm:flex-1"
-        >
-          {candidates.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name} ({c.party.acronym})
-            </option>
-          ))}
-        </select>
+          onChange={setIdB}
+          className="w-full sm:flex-1"
+        />
       </div>
 
       {/* Candidate info cards */}

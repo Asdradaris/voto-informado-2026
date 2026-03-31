@@ -6,6 +6,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import type { Candidate } from "../../types";
+import { cn } from "../../lib/utils";
 import { Card } from "../ui/Card";
 import { Badge } from "../ui/Badge";
 import { Tabs } from "../ui/Tabs";
@@ -246,17 +247,23 @@ function CompareRow({
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-lg bg-white/[0.02] px-3 py-2">
       <span
-        className={`text-right text-sm ${
-          aWins ? "font-semibold text-emerald-400" : "text-gray-300"
-        }`}
+        className={cn(
+          "text-right text-sm",
+          aWins && "font-semibold text-emerald-400",
+          bWins && "text-red-400/80",
+          !aWins && !bWins && "text-gray-300"
+        )}
       >
         {a}
       </span>
       <span className="text-[10px] text-gray-600">{label}</span>
       <span
-        className={`text-sm ${
-          bWins ? "font-semibold text-emerald-400" : "text-gray-300"
-        }`}
+        className={cn(
+          "text-sm",
+          bWins && "font-semibold text-emerald-400",
+          aWins && "text-red-400/80",
+          !aWins && !bWins && "text-gray-300"
+        )}
       >
         {b}
       </span>
