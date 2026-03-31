@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { useState } from "react";
 import { cn } from "../../lib/utils";
 
 interface CandidateAvatarProps {
@@ -16,12 +16,21 @@ const sizeClasses = {
   xl: "h-28 w-28",
 };
 
-const iconSizes = {
-  sm: "h-5 w-5",
-  md: "h-6 w-6",
-  lg: "h-10 w-10",
-  xl: "h-14 w-14",
+const initialsSizes = {
+  sm: "text-xs",
+  md: "text-sm",
+  lg: "text-xl",
+  xl: "text-2xl",
 };
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter((_, i, arr) => i === 0 || i === arr.length - 1)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+}
 
 export function CandidateAvatar({
   photo,
@@ -30,6 +39,9 @@ export function CandidateAvatar({
   size = "md",
   className,
 }: CandidateAvatarProps) {
+  const [imgError, setImgError] = useState(false);
+  const showImage = photo && !imgError;
+
   return (
     <div
       className={cn(
@@ -37,16 +49,25 @@ export function CandidateAvatar({
         sizeClasses[size],
         className
       )}
-      style={{ borderColor: partyColor + "60" }}
+      style={{
+        borderColor: partyColor + "60",
+        backgroundColor: showImage ? undefined : partyColor + "20",
+      }}
     >
-      {photo ? (
+      {showImage ? (
         <img
           src={photo}
           alt={name}
           className="h-full w-full object-cover"
+          onError={() => setImgError(true)}
         />
       ) : (
-        <User className={cn("text-gray-500", iconSizes[size])} />
+        <span
+          className={cn("font-bold", initialsSizes[size])}
+          style={{ color: partyColor }}
+        >
+          {getInitials(name)}
+        </span>
       )}
     </div>
   );

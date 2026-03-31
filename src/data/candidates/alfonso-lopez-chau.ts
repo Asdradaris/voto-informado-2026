@@ -13,7 +13,7 @@ export const alfonsoLopezChau: Candidate = {
     foundedYear: 2023,
     congressSeats: 0,
   },
-  photo: "",
+  photo: "/candidates/ahora_nacion.webp",
   age: 58,
   birthplace: "Lima",
   profession: "Economista",

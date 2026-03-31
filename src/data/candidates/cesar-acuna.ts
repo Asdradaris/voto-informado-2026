@@ -13,7 +13,7 @@ export const cesarAcuna: Candidate = {
     foundedYear: 2001,
     congressSeats: 6,
   },
-  photo: "",
+  photo: "/candidates/alianza_para_el_progreso.webp",
   age: 73,
   birthplace: "La Libertad",
   profession: "Empresario educativo",

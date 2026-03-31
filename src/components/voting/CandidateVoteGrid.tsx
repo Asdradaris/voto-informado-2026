@@ -21,7 +21,7 @@ export function CandidateVoteGrid({
   return (
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-6">
       <h3 className="mb-1 text-sm font-semibold text-gray-200">
-        {disabled ? "Tu voto fue registrado" : "Toca el candidato que quieres que investiguemos a profundidad:"}
+        {disabled ? "Tu voto fue registrado" : "Elige al candidato que quieres que investiguemos a profundidad:"}
       </h3>
       {!disabled && (
         <p className="mb-4 text-xs text-gray-500">

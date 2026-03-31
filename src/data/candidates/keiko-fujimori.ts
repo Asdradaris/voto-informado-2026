@@ -13,7 +13,7 @@ export const keikoFujimori: Candidate = {
     foundedYear: 2010,
     congressSeats: 24,
   },
-  photo: "",
+  photo: "/candidates/fuerza_popular.webp",
   age: 50,
   birthplace: "Lima",
   profession: "Administradora de Empresas",

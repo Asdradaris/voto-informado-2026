@@ -13,7 +13,7 @@ export const rafaelLopezAliaga: Candidate = {
     foundedYear: 2020,
     congressSeats: 13,
   },
-  photo: "",
+  photo: "/candidates/renovacion_popular.webp",
   age: 61,
   birthplace: "Lima",
   profession: "Empresario",

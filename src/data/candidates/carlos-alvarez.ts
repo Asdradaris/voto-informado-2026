@@ -13,7 +13,7 @@ export const carlosAlvarez: Candidate = {
     foundedYear: 2024,
     congressSeats: 0,
   },
-  photo: "",
+  photo: "/candidates/pais_para_todos.webp",
   age: 57,
   birthplace: "Lima",
   profession: "Actor, comediante",

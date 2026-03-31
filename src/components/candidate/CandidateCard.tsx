@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { AlertTriangle, TrendingUp, Star, StarOff, Scale } from "lucide-react";
 import type { Candidate } from "../../types";
-import { Card } from "../ui/Card";
 import { Badge } from "../ui/Badge";
 import { ProgressBar } from "../ui/ProgressBar";
 import { CandidateAvatar } from "./CandidateAvatar";
@@ -33,7 +32,16 @@ export function CandidateCard({ candidate }: CandidateCardProps) {
     : null;
 
   return (
-    <Card hover onClick={() => navigate(`/candidate/${candidate.id}`)}>
+    <div
+      className="group relative cursor-pointer rounded-xl border border-white/[0.06] bg-[#0D0D20] p-5 transition-all duration-200 hover:bg-[#111128] hover:shadow-lg"
+      style={{
+        // @ts-expect-error CSS custom property
+        "--party-color": candidate.party.color,
+      }}
+      onClick={() => navigate(`/candidate/${candidate.id}`)}
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = candidate.party.color + "50")}
+      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)")}
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <CandidateAvatar
@@ -102,21 +110,19 @@ export function CandidateCard({ candidate }: CandidateCardProps) {
             {candidate.redFlags.length} alerta{candidate.redFlags.length > 1 ? "s" : ""}
           </Badge>
         )}
-        <Badge
-          variant={
-            candidate.investigationStatus === "completo"
-              ? "success"
-              : candidate.investigationStatus === "en_progreso"
-              ? "warning"
-              : "pending"
-          }
-        >
-          {candidate.investigationStatus === "completo"
-            ? "Investigado"
-            : candidate.investigationStatus === "en_progreso"
-            ? "En progreso"
-            : "Pendiente"}
-        </Badge>
+        {candidate.investigationStatus !== "en_progreso" && (
+          <Badge
+            variant={
+              candidate.investigationStatus === "completo"
+                ? "success"
+                : "pending"
+            }
+          >
+            {candidate.investigationStatus === "completo"
+              ? "Investigado"
+              : "Pendiente"}
+          </Badge>
+        )}
       </div>
 
       {totalScore !== null && (
@@ -130,6 +136,15 @@ export function CandidateCard({ candidate }: CandidateCardProps) {
           <ProgressBar value={totalScore} size="sm" />
         </div>
       )}
-    </Card>
+      {/* Hover CTA */}
+      <div className="mt-3 overflow-hidden text-center">
+        <span
+          className="text-xs font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+          style={{ color: candidate.party.color }}
+        >
+          Ver perfil →
+        </span>
+      </div>
+    </div>
   );
 }
