@@ -88,7 +88,7 @@ export function CandidatePage() {
           <h1 className="text-2xl font-bold text-gray-100">
             {candidate.name}
           </h1>
-          <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-400 sm:gap-3">
             <span className="flex items-center gap-1.5">
               <span
                 className="inline-block h-2.5 w-2.5 rounded-full"
@@ -108,21 +108,19 @@ export function CandidatePage() {
                 {candidate.negativeImage}% rechazo
               </Badge>
             )}
-            <Badge
-              variant={
-                candidate.investigationStatus === "completo"
-                  ? "success"
-                  : candidate.investigationStatus === "en_progreso"
-                  ? "warning"
-                  : "pending"
-              }
-            >
-              {candidate.investigationStatus === "completo"
-                ? "Investigación completa"
-                : candidate.investigationStatus === "en_progreso"
-                ? "Investigación en progreso"
-                : "Pendiente de investigar"}
-            </Badge>
+            {candidate.investigationStatus !== "en_progreso" && (
+              <Badge
+                variant={
+                  candidate.investigationStatus === "completo"
+                    ? "success"
+                    : "pending"
+                }
+              >
+                {candidate.investigationStatus === "completo"
+                  ? "Investigación completa"
+                  : "Pendiente de investigar"}
+              </Badge>
+            )}
           </div>
           <p className="mt-2 text-sm text-gray-400">
             {candidate.age} años · {candidate.profession} ·{" "}

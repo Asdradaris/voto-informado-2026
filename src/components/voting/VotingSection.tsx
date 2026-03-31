@@ -83,18 +83,6 @@ export function VotingSection() {
       {/* Timeline */}
       <VotingTimeline currentRound={currentRound} />
 
-      {/* Live Results */}
-      <LiveResultsChart
-        counts={counts}
-        totalVoters={totalVoters}
-        votedFor={votedFor}
-      />
-
-      {/* Vote Confirmation */}
-      {hasVoted && votedFor && (
-        <VoteConfirmation candidateId={votedFor} voteNumber={voteNumber} />
-      )}
-
       {/* Error */}
       {(error || voteError) && (
         <motion.div
@@ -107,7 +95,7 @@ export function VotingSection() {
         </motion.div>
       )}
 
-      {/* Voting Grid */}
+      {/* Voting Grid — acción primero */}
       {(roundStatus === "open" || roundStatus === "voted") && (
         <CandidateVoteGrid
           votedFor={votedFor}
@@ -115,6 +103,18 @@ export function VotingSection() {
           onVote={handleVote}
         />
       )}
+
+      {/* Vote Confirmation */}
+      {hasVoted && votedFor && (
+        <VoteConfirmation candidateId={votedFor} voteNumber={voteNumber} />
+      )}
+
+      {/* Live Results — el usuario ve el impacto después de votar */}
+      <LiveResultsChart
+        counts={counts}
+        totalVoters={totalVoters}
+        votedFor={votedFor}
+      />
 
       {/* Investigating state */}
       {roundStatus === "investigating" && currentRound?.winnerCandidateId && (

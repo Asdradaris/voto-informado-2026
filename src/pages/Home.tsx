@@ -69,7 +69,7 @@ export function Home() {
     <div className="mx-auto max-w-7xl px-4 py-6">
       {/* Hero */}
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-100 sm:text-4xl">
+        <h1 className="font-bold tracking-tight text-gray-100" style={{ fontSize: "clamp(1.2rem, 5vw, 2.25rem)" }}>
           VOTO INFORMADO{" "}
           <span className="text-amber-400">2026</span>
         </h1>
@@ -122,13 +122,14 @@ export function Home() {
       </div>
 
       {/* Candidate Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-wrap justify-center gap-4">
         {filtered.map((candidate, i) => (
           <motion.div
             key={candidate.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.05 }}
+            className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)]"
           >
             <CandidateCard candidate={candidate} />
           </motion.div>

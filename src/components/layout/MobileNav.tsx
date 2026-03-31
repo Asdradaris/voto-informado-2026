@@ -21,7 +21,7 @@ export function MobileNav() {
             key={item.path}
             to={item.path}
             className={cn(
-              "flex flex-col items-center gap-1 rounded-lg px-3 py-1.5 text-xs transition-colors",
+              "flex flex-col items-center gap-0.5 rounded-lg px-2 py-1 text-[10px] transition-colors sm:gap-1 sm:px-3 sm:py-1.5 sm:text-xs",
               location.pathname === item.path
                 ? "text-amber-400"
                 : "text-gray-500"
