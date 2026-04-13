@@ -3,9 +3,7 @@ import { supabase, isDemoMode } from "@/lib/supabase";
 import { useFingerprint } from "./useFingerprint";
 import type { CitizenSuggestion } from "@/types";
 
-const SUGGESTION_COUNT_KEY = "vi_suggestions";
-
-const DEMO_SUGGESTIONS: CitizenSuggestion[] = [];
+const SUGGESTION_COUNT_KEY = "vi_suggestions_r2";
 
 // Basic profanity filter
 const BLOCKED_WORDS = [
@@ -16,90 +14,78 @@ const BLOCKED_WORDS = [
 function containsBlockedContent(text: string): boolean {
   const lower = text.toLowerCase();
   if (BLOCKED_WORDS.some((w) => lower.includes(w))) return true;
-  // Block URLs
   if (/https?:\/\/|www\./i.test(text)) return true;
   return false;
 }
 
-function getSuggestionCount(round: number): number {
+function getSuggestionCount(): number {
   try {
-    return Number(localStorage.getItem(`${SUGGESTION_COUNT_KEY}_r${round}`) || "0");
+    return Number(localStorage.getItem(SUGGESTION_COUNT_KEY) || "0");
   } catch {
     return 0;
   }
 }
 
-function incrementSuggestionCount(round: number) {
-  const current = getSuggestionCount(round);
-  localStorage.setItem(`${SUGGESTION_COUNT_KEY}_r${round}`, String(current + 1));
+function incrementSuggestionCount() {
+  const current = getSuggestionCount();
+  localStorage.setItem(SUGGESTION_COUNT_KEY, String(current + 1));
 }
 
-export function useSuggestions(roundNumber: number) {
+export function useSuggestions() {
   const { fingerprint } = useFingerprint();
   const [suggestions, setSuggestions] = useState<CitizenSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [canSuggest, setCanSuggest] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Check limit
   useEffect(() => {
-    const count = getSuggestionCount(roundNumber);
-    setCanSuggest(count < 3);
-  }, [roundNumber]);
+    setCanSuggest(getSuggestionCount() < 3);
+  }, []);
 
-  // Fetch suggestions
+  // Fetch inicial
   useEffect(() => {
-    async function fetch() {
+    async function fetchSuggestions() {
       if (isDemoMode) {
-        setSuggestions(DEMO_SUGGESTIONS);
+        setSuggestions([]);
         setIsLoading(false);
         return;
       }
 
-      const { data, error: err } = await supabase
+      const { data, error } = await supabase
         .from("citizen_suggestions")
-        .select("*")
-        .eq("voting_round", roundNumber)
+        .select("id, content, created_at")
         .order("created_at", { ascending: false })
         .limit(20);
 
-      if (!err && data) {
+      if (!error && data) {
         setSuggestions(
           data.map((d) => ({
             id: d.id,
             content: d.content,
             createdAt: d.created_at,
-            roundNumber: d.voting_round,
           }))
         );
       }
       setIsLoading(false);
     }
 
-    fetch();
-  }, [roundNumber]);
+    fetchSuggestions();
+  }, []);
 
-  // Realtime subscription for new suggestions
+  // Realtime
   useEffect(() => {
     if (isDemoMode) return;
 
     const channel = supabase
-      .channel("suggestions-realtime")
+      .channel("suggestions-realtime-r2")
       .on(
         "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "citizen_suggestions",
-          filter: `voting_round=eq.${roundNumber}`,
-        },
+        { event: "INSERT", schema: "public", table: "citizen_suggestions" },
         (payload) => {
           const newSuggestion: CitizenSuggestion = {
             id: payload.new.id,
             content: payload.new.content,
             createdAt: payload.new.created_at,
-            roundNumber: payload.new.voting_round,
           };
           setSuggestions((prev) => [newSuggestion, ...prev].slice(0, 20));
         }
@@ -109,26 +95,15 @@ export function useSuggestions(roundNumber: number) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [roundNumber]);
+  }, []);
 
   const submitSuggestion = useCallback(
     async (content: string): Promise<{ ok: boolean; message?: string }> => {
-      setError(null);
-
-      // Validations
       const trimmed = content.trim();
-      if (trimmed.length < 10) {
-        return { ok: false, message: "Escribe al menos 10 caracteres" };
-      }
-      if (trimmed.length > 500) {
-        return { ok: false, message: "Máximo 500 caracteres" };
-      }
-      if (containsBlockedContent(trimmed)) {
-        return { ok: false, message: "Tu sugerencia contiene contenido no permitido" };
-      }
-      if (!canSuggest) {
-        return { ok: false, message: "Alcanzaste el límite de sugerencias para esta ronda" };
-      }
+      if (trimmed.length < 10) return { ok: false, message: "Escribe al menos 10 caracteres" };
+      if (trimmed.length > 500) return { ok: false, message: "Máximo 500 caracteres" };
+      if (containsBlockedContent(trimmed)) return { ok: false, message: "Tu sugerencia contiene contenido no permitido" };
+      if (!canSuggest) return { ok: false, message: "Alcanzaste el límite de sugerencias" };
 
       setIsSubmitting(true);
 
@@ -137,30 +112,27 @@ export function useSuggestions(roundNumber: number) {
           id: crypto.randomUUID(),
           content: trimmed,
           createdAt: new Date().toISOString(),
-          roundNumber,
         };
         setSuggestions((prev) => [newSuggestion, ...prev]);
-        incrementSuggestionCount(roundNumber);
-        setCanSuggest(getSuggestionCount(roundNumber) < 3);
+        incrementSuggestionCount();
+        setCanSuggest(getSuggestionCount() < 3);
         setIsSubmitting(false);
         return { ok: true };
       }
 
       try {
-        const { error: err } = await supabase.from("citizen_suggestions").insert({
+        const { error } = await supabase.from("citizen_suggestions").insert({
           content: trimmed,
           fingerprint: fingerprint || "anonymous",
-          voting_round: roundNumber,
         });
 
-        if (err) {
-          setError("Error al enviar tu sugerencia");
+        if (error) {
           setIsSubmitting(false);
           return { ok: false, message: "Error al enviar" };
         }
 
-        incrementSuggestionCount(roundNumber);
-        setCanSuggest(getSuggestionCount(roundNumber) < 3);
+        incrementSuggestionCount();
+        setCanSuggest(getSuggestionCount() < 3);
         setIsSubmitting(false);
         return { ok: true };
       } catch {
@@ -168,15 +140,8 @@ export function useSuggestions(roundNumber: number) {
         return { ok: false, message: "Error de conexión" };
       }
     },
-    [fingerprint, roundNumber, canSuggest]
+    [fingerprint, canSuggest]
   );
 
-  return {
-    suggestions,
-    isLoading,
-    isSubmitting,
-    canSuggest,
-    error,
-    submitSuggestion,
-  };
+  return { suggestions, isLoading, isSubmitting, canSuggest, submitSuggestion };
 }

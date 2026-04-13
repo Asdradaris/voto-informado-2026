@@ -1,15 +1,19 @@
-import { useRealtimeVotes } from "@/hooks/useRealtimeVotes";
-import { useVoting } from "@/hooks/useVoting";
-import { LiveResultsChart } from "@/components/voting/LiveResultsChart";
-import { RoundStatus } from "@/components/voting/RoundStatus";
-import { VotingTimeline } from "@/components/voting/VotingTimeline";
 import { BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useBinaryPoll } from "@/hooks/useBinaryPoll";
+import { BinaryVoteBar } from "@/components/voting/BinaryVoteBar";
+import { POLL_QUESTION } from "@/config/finalists";
 
 export function ResultsPage() {
-  const { currentRound, votedFor, roundStatus } = useVoting();
-  const roundNumber = currentRound?.roundNumber ?? 1;
-  const { counts, totalVoters, isConnected } = useRealtimeVotes(roundNumber);
+  const { counts, totalVoters, isOpen, isLoading } = useBinaryPoll();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-500/30 border-t-amber-500" />
+      </div>
+    );
+  }
 
   return (
     <section className="mx-auto max-w-4xl space-y-6 px-4 py-8">
@@ -21,27 +25,19 @@ export function ResultsPage() {
           </h2>
         </div>
         <p className="text-sm text-gray-400">
-          Resultados en tiempo real de la encuesta ciudadana.
+          {POLL_QUESTION} — resultados en tiempo real.
         </p>
       </div>
 
-      <RoundStatus
-        round={currentRound}
-        totalVoters={totalVoters}
-        status={roundStatus}
-        isConnected={isConnected}
-      />
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-6">
+        <BinaryVoteBar
+          counts={counts}
+          totalVoters={totalVoters}
+          isClosed={!isOpen}
+        />
+      </div>
 
-      <VotingTimeline currentRound={currentRound} />
-
-      <LiveResultsChart
-        counts={counts}
-        totalVoters={totalVoters}
-        votedFor={votedFor}
-        maxVisible={counts.length}
-      />
-
-      {roundStatus === "open" && (
+      {isOpen && (
         <div className="text-center">
           <Link
             to="/encuesta"
@@ -53,7 +49,7 @@ export function ResultsPage() {
       )}
 
       <p className="text-center text-[10px] leading-relaxed text-gray-600">
-        Encuesta ciudadana voluntaria y no oficial. 1 dispositivo = 1 voto por ronda.
+        Encuesta ciudadana no oficial. Sin valor estadístico formal. 1 dispositivo = 1 voto. Resultados en tiempo real.
       </p>
     </section>
   );

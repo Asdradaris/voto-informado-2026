@@ -35,7 +35,7 @@ export function SuggestionInput({ canSuggest, isSubmitting, onSubmit }: Suggesti
   if (!canSuggest) {
     return (
       <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-4 text-center text-xs text-gray-500">
-        Alcanzaste el límite de sugerencias para esta ronda. Gracias por participar.
+        Alcanzaste el límite de sugerencias. Gracias por participar.
       </div>
     );
   }
@@ -43,7 +43,7 @@ export function SuggestionInput({ canSuggest, isSubmitting, onSubmit }: Suggesti
   return (
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-6">
       <h3 className="mb-1 text-sm font-semibold text-gray-200">
-        ¿Qué te preocupa de estas elecciones?
+        ¿Qué te preocupa de esta segunda vuelta?
       </h3>
       <p className="mb-3 text-xs text-gray-500">
         Opcional · Anónimo · Máximo 500 caracteres
@@ -60,7 +60,7 @@ export function SuggestionInput({ canSuggest, isSubmitting, onSubmit }: Suggesti
               handleSubmit();
             }
           }}
-          placeholder="¿Qué quieres saber de los candidatos?"
+          placeholder="¿Qué te preocupa de esta segunda vuelta?"
           rows={3}
           className="w-full resize-none rounded-xl border border-white/[0.06] bg-white/[0.03] p-3 text-sm text-gray-200 placeholder-gray-600 outline-none transition-colors focus:border-amber-500/30 focus:bg-white/[0.04]"
         />

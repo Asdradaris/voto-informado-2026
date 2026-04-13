@@ -21,11 +21,14 @@ export type {
 } from "./scoring";
 
 export type {
-  VotingRound,
-  VoteCount,
+  BinaryVoteCount,
+  BinaryPollState,
   CitizenSuggestion,
-  VotingState,
   CastVotePayload,
   CastVoteResponse,
   SubmitSuggestionPayload,
+  // Legacy (primera vuelta)
+  VotingRound,
+  VoteCount,
+  VotingState,
 } from "./voting";

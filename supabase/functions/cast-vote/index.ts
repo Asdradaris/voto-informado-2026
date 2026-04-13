@@ -6,6 +6,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const VALID_FINALISTS = ["keiko-fujimori", "rafael-lopez-aliaga"] as const;
+
+// Encuesta cerrada 1 día antes del voto oficial (hora Perú UTC-5)
+const POLL_CLOSE_DATE = new Date("2026-06-06T23:59:59-05:00");
+
 async function hashString(str: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(str + (Deno.env.get("HASH_SALT") || "vi2026"));
@@ -16,7 +21,6 @@ async function hashString(str: string): Promise<string> {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
@@ -41,7 +45,7 @@ serve(async (req) => {
       });
     }
 
-    // Validate inputs
+    // Validar inputs básicos
     if (!candidateId || !fingerprint) {
       return new Response(
         JSON.stringify({ error: "invalid", message: "Datos incompletos" }),
@@ -49,55 +53,53 @@ serve(async (req) => {
       );
     }
 
-    // Hash IP for privacy
+    // Validar que el candidato sea uno de los 2 finalistas
+    if (!VALID_FINALISTS.includes(candidateId as typeof VALID_FINALISTS[number])) {
+      return new Response(
+        JSON.stringify({ error: "invalid", message: "Candidato no válido para segunda vuelta" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validar que la encuesta esté abierta
+    if (Date.now() > POLL_CLOSE_DATE.getTime()) {
+      return new Response(
+        JSON.stringify({ error: "closed", message: "La encuesta cerró el 6 de junio." }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Hash IP para privacidad
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     const ipHash = await hashString(ip);
 
-    // Create Supabase admin client
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
       { auth: { persistSession: false } }
     );
 
-    // Rate limit: max 3 votes per IP in 24h
-    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const { count: recentFromIp } = await supabase
+    // Rate limit: máximo 3 votos por IP en toda la vida de la encuesta
+    const { count: votesFromIp } = await supabase
       .from("citizen_votes")
       .select("*", { count: "exact", head: true })
-      .eq("ip_hash", ipHash)
-      .gte("created_at", twentyFourHoursAgo);
+      .eq("ip_hash", ipHash);
 
-    if ((recentFromIp ?? 0) >= 3) {
+    if ((votesFromIp ?? 0) >= 3) {
       return new Response(
         JSON.stringify({
           error: "rate_limit",
-          message: "Se alcanzó el límite de votos desde tu red. Intenta mañana.",
+          message: "Se alcanzó el límite de votos desde tu red.",
         }),
         { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Get active round
-    const { data: activeRound } = await supabase
-      .from("voting_rounds")
-      .select("*")
-      .eq("is_active", true)
-      .single();
-
-    if (!activeRound) {
-      return new Response(
-        JSON.stringify({ error: "closed", message: "No hay ronda de votación activa" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Insert vote (UNIQUE constraint prevents duplicate fingerprint per round)
+    // Insertar voto (UNIQUE constraint en fingerprint previene duplicados)
     const { error: insertError } = await supabase.from("citizen_votes").insert({
       candidate_id: candidateId,
       fingerprint,
       ip_hash: ipHash,
-      voting_round: activeRound.round_number,
     });
 
     if (insertError) {
@@ -105,7 +107,7 @@ serve(async (req) => {
         return new Response(
           JSON.stringify({
             error: "already_voted",
-            message: "Ya votaste en esta ronda",
+            message: "Ya votaste en esta encuesta. 1 dispositivo = 1 voto.",
           }),
           { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
@@ -113,14 +115,13 @@ serve(async (req) => {
       throw insertError;
     }
 
-    // Update total votes counter
-    await supabase
-      .from("voting_rounds")
-      .update({ total_votes: activeRound.total_votes + 1 })
-      .eq("id", activeRound.id);
+    // Obtener total actualizado
+    const { count: totalVotes } = await supabase
+      .from("citizen_votes")
+      .select("*", { count: "exact", head: true });
 
     return new Response(
-      JSON.stringify({ ok: true, voteNumber: activeRound.total_votes + 1 }),
+      JSON.stringify({ ok: true, voteNumber: totalVotes ?? 1 }),
       { status: 201, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
