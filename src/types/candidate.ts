@@ -21,11 +21,19 @@ export interface Candidate {
   tier: "top" | "mid" | "low";
 
   redFlags: RedFlag[];
+  runningMates?: RunningMate[];
 
   sources: Source[];
   lastUpdated: string;
   investigationStatus: "completo" | "en_progreso" | "pendiente";
   notes: string;
+}
+
+export interface RunningMate {
+  position: "1er VP" | "2do VP";
+  name: string;
+  description: string;
+  legalNote?: string;
 }
 
 export interface Party {
