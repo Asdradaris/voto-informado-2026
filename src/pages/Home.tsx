@@ -106,7 +106,7 @@ export function Home() {
         {/* CTA comparar */}
         <div className="mt-6 flex justify-center">
           <button
-            onClick={() => navigate("/comparar")}
+            onClick={() => navigate("/compare")}
             className="inline-flex items-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/5 px-8 py-3 font-semibold text-amber-400 transition-all duration-200 hover:border-amber-500/40 hover:bg-amber-500/10 hover:shadow-[0_0_20px_rgba(245,166,35,0.1)]"
             style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
           >

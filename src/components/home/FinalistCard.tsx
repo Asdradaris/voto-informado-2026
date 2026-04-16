@@ -39,7 +39,7 @@ export function FinalistCard({ candidate, firstRoundResult }: FinalistCardProps)
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      onClick={() => navigate(`/candidato/${candidate.id}`)}
+      onClick={() => navigate(`/candidate/${candidate.id}`)}
       className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border bg-[#0D0D20] transition-colors duration-200"
       style={{
         borderColor: "rgba(255,255,255,0.06)",
@@ -111,7 +111,7 @@ export function FinalistCard({ candidate, firstRoundResult }: FinalistCardProps)
           className="mt-auto flex w-full items-center justify-center gap-1.5 rounded-lg border border-white/[0.06] py-2.5 text-sm font-medium text-amber-400 transition-all duration-200 hover:border-amber-500/30 hover:bg-amber-500/5"
           onClick={(e) => {
             e.stopPropagation();
-            navigate(`/candidato/${candidate.id}`);
+            navigate(`/candidate/${candidate.id}`);
           }}
         >
           Ver perfil completo
