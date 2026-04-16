@@ -7,6 +7,7 @@ export interface BinaryVoteCount {
   candidateName: string;
   partyName: string;
   partyColor: string;
+  photo: string;
   totalVotes: number;
   percentage: number;
 }

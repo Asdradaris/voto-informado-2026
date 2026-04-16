@@ -8,18 +8,20 @@ const VOTED_KEY = "vi_voted_r2";
 const VOTED_FOR_KEY = "vi_voted_for_r2";
 const LOAD_TIME_KEY = "vi_load_time";
 
-const FINALISTS: Pick<BinaryVoteCount, "candidateId" | "candidateName" | "partyName" | "partyColor">[] = [
+const FINALISTS: Pick<BinaryVoteCount, "candidateId" | "candidateName" | "partyName" | "partyColor" | "photo">[] = [
   {
     candidateId: "keiko-fujimori",
     candidateName: "Keiko Fujimori",
     partyName: "Fuerza Popular",
     partyColor: "#FF6B00",
+    photo: "/candidates/fuerza_popular.webp",
   },
   {
     candidateId: "rafael-lopez-aliaga",
     candidateName: "Rafael López Aliaga",
     partyName: "Renovación Popular",
     partyColor: "#1E3A5F",
+    photo: "/candidates/renovacion_popular.webp",
   },
 ];
 

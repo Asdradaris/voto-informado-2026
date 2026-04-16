@@ -48,12 +48,9 @@ export function FinalistVoteCard({
       {/* Foto */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-900">
         <img
-          src={`/candidates/${finalist.candidateId}.webp`}
+          src={finalist.photo}
           alt={finalist.candidateName}
           className="h-full w-full object-cover object-top"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = "/candidates/placeholder.webp";
-          }}
         />
         {/* Overlay de partido */}
         <div
